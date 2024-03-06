@@ -1,0 +1,12 @@
+copy baris
+Shift + Alt + ArrowDown
+
+ganti semua text
+Ctrl + D
+
+untuk test spesific dari text pada describe  
+npx jest user.test.js -t "DELETE /api/users/logout"
+npx jest user.test.js -t "PATCH /api/users/current"
+
+describe dan it(xxxxxxxxx)
+npx jest user.test.js -t "PATCH /api/users/current should can update user name and password"
