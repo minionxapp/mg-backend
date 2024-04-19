@@ -1,7 +1,10 @@
 import express from "express";
-import userController from "../controller/user-controller";
-import { authMiddleware } from "../middleware/auth-middleware";
-import contactController from "../controller/contact-controller";
+import userController from "../controller/user-controller.js";
+import { authMiddleware } from "../middleware/auth-middleware.js";
+import contactController from "../controller/contact-controller.js";
+
+import personController from "../controller/person-controller.js";
+
 const userRouter = new express.Router();
 userRouter.use(authMiddleware);
 
@@ -12,6 +15,20 @@ userRouter.delete('/api/users/logout', userController.logout);
 
 // contact
 userRouter.post('/api/contacts',contactController.create);
+userRouter.get('/api/contacts/:contactId', contactController.get);
+userRouter.put('/api/contacts/:contactId', contactController.update);
+userRouter.delete('/api/contacts/:contactId', contactController.remove);
+userRouter.get('/api/contacts', contactController.search);
+
+
+
+
+
+userRouter.post('/api/persons',personController.create);
+userRouter.get('/api/persons/:personId', personController.get);
+userRouter.put('/api/persons/:personId', personController.update);
+userRouter.delete('/api/persons/:personId', personController.remove);
+userRouter.get('/api/persons', personController.search);
 
 export{
     userRouter

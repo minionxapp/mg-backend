@@ -1,11 +1,11 @@
 
-import { prismaClient } from "../application/database";
-import { logger } from "../application/logging";
-import { ResponseError } from "../error/response-error";
-import { validat } from "../validation/validation";
+import { prismaClient } from "../application/database.js";
+import { logger } from "../application/logging.js";
+import { ResponseError } from "../error/response-error.js";
+import { validat } from "../validation/validation.js";
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
-import { registerUserValidation, loginUserValidation, getUserValidation, updateUserValidation } from "../validation/user-validation";
+import { registerUserValidation, loginUserValidation, getUserValidation, updateUserValidation } from "../validation/user-validation.js";
 
 const register = async (request) => {
     const user = validat(registerUserValidation, request);
@@ -15,7 +15,7 @@ const register = async (request) => {
             username: user.username
         }
     })
-
+    // const countUser1 = await prismaClient.teman
     if (countUser === 1) {
         throw new ResponseError(400, 'User already exist');
     }

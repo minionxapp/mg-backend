@@ -1,4 +1,4 @@
-import { prismaClient } from "../application/database";
+import { prismaClient } from "../application/database.js";
 
 /*
 akan mngecek semua request, dengan memeriksan parameter token yang dikirimkan pada  Authorization

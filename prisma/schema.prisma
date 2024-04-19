@@ -19,6 +19,8 @@ model User{
   name String @db.VarChar(100)
   token String? @db.VarChar(100)
   contacts Contact[] //relasi ke contact
+  // createdAt DateTime @default(now())
+  // updatedAt DateTime @updatedAt
   @@map("users")
 }
 
@@ -30,7 +32,54 @@ model Contact {
   phone      String?   @db.VarChar(20)
   username   String    @db.VarChar(100) //untuk relasi dengan table user
   user       User      @relation(fields: [username], references: [username])
-  
+  // createdAt DateTime @default(now())
+  // updatedAt DateTime @updatedAt
 
   @@map("contacts")
+}
+
+
+model Pegawai{
+  nik String @id @db.VarChar(100)
+  name String @db.VarChar(100)
+  alamat String? @db.VarChar(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("pegawais")
+}
+
+model Table{
+  id  Int  @id @default(autoincrement())
+  namaTable String @db.VarChar(100)
+  namaKolom String @db.VarChar(100)
+  tipe String @db.VarChar(100)
+  panjang Int 
+  notNull String @db.VarChar(2) @default("Y")
+  createRequest	String @db.VarChar(2) @default("Y")
+  createResponseSukses	String @db.VarChar(2) @default("Y")
+  updateRequest	String @db.VarChar(2) @default("Y")
+  updateResponseSukses	String @db.VarChar(2) @default("Y")
+  getRequest	String @db.VarChar(2) @default("Y")
+  getResponse	String @db.VarChar(2) @default("Y")
+  searchRequest	String @db.VarChar(2) @default("Y")
+  searchResponse	String @db.VarChar(2) @default("Y")
+  removeRequest String @db.VarChar(2) @default("Y")
+  removeResponse String @db.VarChar(2) @default("Y")
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  @@map("Tables")
+}
+
+// Test table person
+model Person{
+  id Int @id @default(autoincrement())
+  nama String @db.VarChar(20)
+  alamat String? @db.VarChar(250)
+  nik String? @db.VarChar(10)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("persons")
 }
