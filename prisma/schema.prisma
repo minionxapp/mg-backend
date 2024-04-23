@@ -65,8 +65,6 @@ model Table{
   searchResponse	String @db.VarChar(2) @default("Y")
   removeRequest String @db.VarChar(2) @default("Y")
   removeResponse String @db.VarChar(2) @default("Y")
-
-
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   @@map("Tables")
@@ -80,6 +78,8 @@ model Person{
   nik String? @db.VarChar(10)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  createBy String? @db.VarChar(20)
+  updateBy String? @db.VarChar(20)
 
   @@map("persons")
 }

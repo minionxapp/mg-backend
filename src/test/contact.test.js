@@ -206,7 +206,7 @@ describe('GET /api/contacts', function () {
         expect(result.body.paging.total_page).toBe(1);
         expect(result.body.paging.total_item).toBe(6);
     });
-
+//=====================================================SAMPAI SINI DULU
     it('should can search using email', async () => {
         const result = await supertest(web)
             .get('/api/contacts')

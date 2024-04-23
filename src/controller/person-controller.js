@@ -1,8 +1,13 @@
+//===Begin On CONTROLLER===
+
+import { logger } from "../application/logging.js";
 import personService from "../service/person-service.js";
 const create = async (req, res, next) => {
+    logger.info("mulai test create")
     try {
         const user = req.user;
         const request = req.body;
+       
         const result = await personService.create(user, request);
         res.status(200).json({
             data: result
@@ -15,6 +20,7 @@ const get = async (req, res, next) => {
     try {
         const user = req.user;
         const personId = req.params.personId;
+        
         const result = await personService.get(user, personId);
         res.status(200).json({
             data: result
@@ -26,7 +32,8 @@ const get = async (req, res, next) => {
 const update = async (req, res, next) => {
     try {
         const user = req.user;
-        const personId = req.params.persontId;
+        const personId = req.params.personId;
+
         const request = req.body;
         request.id = personId;
         const result = await personService.update(user, request);
@@ -40,8 +47,8 @@ const update = async (req, res, next) => {
 const remove = async (req, res, next) => {
     try {
         const user = req.user;
-        const contactId = req.params.contactId;
-        await contactService.remove(user, contactId);
+        const personId = req.params.personId;
+        await personService.remove(user, personId);
         res.status(200).json({
             data: "OK"
         })
@@ -59,7 +66,8 @@ const search = async (req, res, next) => {
             page: req.query.page,
             size: req.query.size
         };
-        const result = await contactService.search(user, request);
+        
+        const result = await personService.search(user, request);
         res.status(200).json({
             data: result.data,
             paging: result.paging

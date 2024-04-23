@@ -1,5 +1,8 @@
 
 
+//================================================Begin Of Service============================
+
+
 import { prismaClient } from "../application/database.js";
 import { logger } from "../application/logging.js";
 import { ResponseError } from "../error/response-error.js";
@@ -8,7 +11,7 @@ import { createPersonValidation, getPersonValidation, updatePersonValidation, se
 
 const create = async (user, request) => {
     const person = validat(createPersonValidation, request);
-    // /*  person.username = user.username;*/
+    person.createBy = user.username;
     return prismaClient.person.create({
         data: person,
         select: {
@@ -22,11 +25,10 @@ const create = async (user, request) => {
 
 
 const get = async (user, personId) => {
-    personId = validat(getPersonValidation, personId);
-    const person = await prismaClient.person.findFirst({
+    const person = validat(getPersonValidation, personId);
+    const Person = await prismaClient.person.findFirst({
         where: {
-            // /*username : user.username,*/
-            id: personId
+            id: person.Id
         },
         select: {
             id: true,
@@ -35,18 +37,19 @@ const get = async (user, personId) => {
             nik: true,
         }
     })
-    if (!person) {
+    if (!Person) {
         throw new ResponseError(404, "person is not found");
     }
     logger.info(person);
-    return person;
+    return Person;
 }
 
 const update = async (user, request) => {
     const person = validat(updatePersonValidation, request);
+    person.updateBy = user.username;
     const totalPersonInDatabase = await prismaClient.person.count({
         where: {
-            // /*username: user.username,*/
+            // /*createBy: user.username,*/
             id: person.id
         }
     });
@@ -58,6 +61,7 @@ const update = async (user, request) => {
             id: person.id
         },
         data: {
+            updateBy: user.username,
             nama: person.nama,
             alamat: person.alamat,
             nik: person.nik,
@@ -94,9 +98,9 @@ const search = async (user, request) => {
     // 2 ((page - 1) * size) = 10
     const skip = (request.page - 1) * request.size;
     const filters = [];
-    filters.push({
-        // /*username: user.username*/
-    })
+    // filters.push({
+    //     createBy: user.username
+    // })
     if (request.nama) {
         filters.push({
             nama: {
@@ -118,6 +122,7 @@ const search = async (user, request) => {
             }
         });
     }
+
     const person = await prismaClient.person.findMany({
         where: {
             AND: filters
@@ -149,3 +154,5 @@ export default {
     search
 }
 
+
+//====End Of SERVICE===
