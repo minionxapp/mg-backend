@@ -205,7 +205,7 @@ describe('Delete api/person/:personId', () => {
 describe('GET /api/contacts', function () {
     beforeEach(async () => {
         await createTestUser();
-        //await createManyTestPersons();
+        //aw*ait createManyTestPersons();
         for (let i = 0; i < 15; i++) {
             await prismaClient.person.create({
                 data: {
@@ -250,11 +250,11 @@ describe('GET /api/contacts', function () {
         expect(result.body.paging.total_item).toBe(15);
     });
 
-    it('should can search using name', async () => {
+    it('should can search using nama', async () => {
         const result = await supertest(web)
             .get('/api/persons')
             .query({
-                nama: "test1"
+                nama: "test1" //sesuaikan yaaa
             })
             .set('Authorization', 'test');
         logger.info(result.body);
@@ -263,5 +263,45 @@ describe('GET /api/contacts', function () {
         expect(result.body.paging.page).toBe(1);
         expect(result.body.paging.total_page).toBe(1);
         expect(result.body.paging.total_item).toBe(6);
+    }); it('should can search using alamat', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .query({
+                alamat: "test1" //sesuaikan yaaa
+            })
+            .set('Authorization', 'test');
+        logger.info(result.body);
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    }); it('should can search using nik', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .query({
+                nik: "test1" //sesuaikan yaaa
+            })
+            .set('Authorization', 'test');
+        logger.info(result.body);
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    }); 
+    it('should can search using all kriteria', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .query({
+                nama: "test1",
+                alamat: "test1",
+                nik: "test1",
+            })
+            .set('Authorization', 'test');
+        logger.info(result.body);
+        expect(result.status).toBe(200);
+        expect(result.body.paging.page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
     });
 })
