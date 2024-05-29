@@ -588,7 +588,7 @@ const get = async (req, res, next) => {
             "})<br>" +
 
             "afterEach(async () => {<br> " +
-            "//aw ait removeAllTest" + namaModel + "s();<br> " +
+            "//aw*ait removeAllTest" + namaModel + "s();<br> " +
             "await prismaClient." + namaModelOri + ".deleteMany({<br> " +
             "where : {<br> " +
             "createBy : \"test\"<br> " +
@@ -602,14 +602,12 @@ const get = async (req, res, next) => {
             "const result = await supertest(web)<br> " +
             ".get('/api/" + namaModelOri + "s')<br> " +
             ".set('Authorization', 'test');<br> " +
-
             "expect(result.status).toBe(200);<br> " +
             "expect(result.body.data.length).toBe(10);<br> " +
             "expect(result.body.paging.page).toBe(1);<br> " +
             "expect(result.body.paging.total_page).toBe(2);<br> " +
             "expect(result.body.paging.total_item).toBe(15);<br> " +
             "});" + "<br></br>" +
-
 
             "it('should can search to page 2', async () => {<br> " +
             "const result = await supertest(web)<br> " +
@@ -618,7 +616,6 @@ const get = async (req, res, next) => {
             "page: 2<br> " +
             "})<br> " +
             ".set('Authorization', 'test');<br> " +
-
             "expect(result.status).toBe(200);<br> " +
             "expect(result.body.data.length).toBe(5);<br> " +
             "expect(result.body.paging.page).toBe(2);<br> " +
@@ -626,24 +623,10 @@ const get = async (req, res, next) => {
             "expect(result.body.paging.total_item).toBe(15);<br> " +
             "});<br><br>" 
 
-            // " it('should can search using name', async () => {<br> " +
-            // "const result = await supertest(web)<br> " +
-            // ".get('/api/" + namaModelOri + "s')<br> " +
-            // ".query({<br> " +
-            // "nameXXXXX: \"test1\" //sesuaikan yaaa<br> " +
-            // "})<br> " +
-            // ".set('Authorization', 'test');<br> " +
-            // "logger.info(result.body);<br> " +
-            // "expect(result.status).toBe(200);<br> " +
-            // "expect(result.body.data.length).toBe(6);<br> " +
-            // "expect(result.body.paging.page).toBe(1);<br> " +
-            // "expect(result.body.paging.total_page).toBe(1);<br> " +
-            // "expect(result.body.paging.total_item).toBe(6);<br> " +
-            // "});"
-
+           
             result.forEach(element => {
                 test = test + 
-                " it('should can search using "+element.namaKolom+"', async () => {<br> " +
+                "<br>it('should can search using "+element.namaKolom+"', async () => {<br> " +
                 "const result = await supertest(web)<br> " +
                 ".get('/api/" + namaModelOri + "s')<br> " +
                 ".query({<br> " +
@@ -661,7 +644,7 @@ const get = async (req, res, next) => {
 
 
             test = test +
-            "it('should can search using all kriteria', async () => {<br> " +
+            "<br>it('should can search using all kriteria', async () => {<br> " +
                 "const result = await supertest(web)<br> " +
                 ".get('/api/"+namaModelOri+"s')<br> " +
                 ".query({<br> " 
