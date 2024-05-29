@@ -70,12 +70,12 @@ model Table{
   @@map("Tables")
 }
 
-// Test table person
+
 model Person{
   id Int @id @default(autoincrement())
   nama String @db.VarChar(20)
-  alamat String? @db.VarChar(250)
-  nik String? @db.VarChar(10)
+  alamat String @db.VarChar(250)
+  nik String @db.VarChar(10)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   createBy String? @db.VarChar(20)

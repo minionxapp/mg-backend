@@ -9,7 +9,7 @@ const get = async (req, res, next) => {
         // name String @db.VarChar(100)
         let namaModelOri = result[0].namaTable
         let namaModel = result[0].namaTable.charAt(0).toUpperCase() + result[0].namaTable.slice(1);
-        let model = "<br><br>//=================================Begin Prisma Client==========================<br>" +
+        let model = "<br>" +
             'model ' + namaModel + "{<br>"
         model = model + "&nbsp;&nbsp;id  Int  @id @default(autoincrement()) <br>"
         result.forEach(element => {
@@ -30,10 +30,10 @@ const get = async (req, res, next) => {
             "&nbsp;&nbsp;updateBy String? @db.VarChar(20)<br>"
         model = model + "<br>&nbsp;&nbsp;@@map(\"" + result[0].namaTable + "s\")<br>}"
 
-        model = model + "<br><br>//===End of Prisma Client===<br>"
+        model = model + "<br><br>"
 
-        let validate = "<br><br>//==============================================Begin Validation====================<br>" +
-            "<br><br>import Joi from \"joi\";<br><br>"
+        let validate = "" +
+            "import Joi from \"joi\";<br><br>"
         validate = validate + "const create" + namaModel + "Validation = Joi.object({"
         result.forEach(element => {
             validate = validate + "<br>&nbsp;&nbsp;" + element.namaKolom + " : Joi."
@@ -72,7 +72,7 @@ const get = async (req, res, next) => {
             if (element.tipe === "Varchar") {
                 validate = validate + "string().max(" + element.panjang + ")"
                 if (element.notNull === "Y") {
-                    validate = validate + ".required(),"
+                    validate = validate + ".optional(),"
                 }
                 if (element.notNull === "N") {
                     validate = validate + ".optional(),"
@@ -85,14 +85,14 @@ const get = async (req, res, next) => {
             "&nbsp;&nbsp;get" + namaModel + "Validation,<br>" +
             "&nbsp;&nbsp;update" + namaModel + "Validation,<br>" +
             "&nbsp;&nbsp;search" + namaModel + "Validation,<br>}"
-        validate = validate + "<br><br>//===End of Validation===<br>"
+        validate = validate + "<br><br>"
 
         let space = "&nbsp;&nbsp;"
         let space2 = space + space + space + space + space + space + space + space;
 
         // ===============SERVICE  CREATE====
-        let service = "<br><br>//================================================Begin Of Service============================<br>" +
-            "<br><br>import { prismaClient } from \"../application/database.js\";<br>" +
+        let service = "// ===============SERVICE  CREATE====<br>" +
+            "import { prismaClient } from \"../application/database.js\";<br>" +
             "import { logger } from \"../application/logging.js\";<br>" +
             "import { ResponseError } from \"../error/response-error.js\";<br>" +
             "import { validat } from \"../validation/validation.js\";<br>" +
@@ -116,7 +116,7 @@ const get = async (req, res, next) => {
             space + "})<br>" + "}<br><br><br>"
 
         // ===============SERVICE  GET====
-        service = service +
+        service = service + "//===============SERVICE  GET====<br>" +
             "const get = async(user," + namaModelOri + "Id)=>{<br> const" +
             space + namaModelOri + " = validat(get" + namaModel + "Validation," + namaModelOri + "Id);<br>" +
             space + "const " + namaModel + " = await prismaClient." + namaModelOri + ".findFirst({<br>" +
@@ -140,7 +140,7 @@ const get = async (req, res, next) => {
             space + "return " + namaModel + ";<br>}<br><br>"
 
         //  ===============SERVICE UPDATE=====================
-        service = service +
+        service = service + "//===============SERVICE UPDATE=====================<br>" +
             "const update = async (user,request)=>{<br>" +
             space + "const " + namaModelOri + " = validat(update" + namaModel + "Validation,request);<br>" +
             "" + namaModelOri + ".updateBy = user.username;<br>" +
@@ -171,7 +171,7 @@ const get = async (req, res, next) => {
         service = service + space + "})<br>" + "}<br><br>"
 
         //  ===============SERVICE REMOVE=====================
-        let service2 =
+        let service2 = "//===============SERVICE REMOVE=====================<br>" +
             "const remove = async (user," + namaModelOri + "Id)=>{<br>" +
             space + "" + namaModelOri + "Id = validat(get" + namaModel + "Validation," + namaModelOri + "Id);<br>" +
             space + "const totalInDatabase = await prismaClient." + namaModelOri + ".count({<br>" +
@@ -191,7 +191,7 @@ const get = async (req, res, next) => {
             space + "}<br><br>"
 
         //  ===============SERVICE SEARCH=====================
-        service2 = service2 +
+        service2 = service2 + "//===============SERVICE SEARCH=====================<br>" +
             "const search = async (user, request) => {<br>" +
             space + "request = validat(search" + namaModel + "Validation, request);<br>" +
             space + "// 1 ((page - 1) * size) = 0<br>" +
@@ -242,13 +242,13 @@ const get = async (req, res, next) => {
             space2 + "update,<br>" +
             space2 + "remove,<br>" +
             space2 + "search<br>" +
-            "}<br><br><br>" + "//====End Of SERVICE===<br>"
+            "}<br>" + "<br>"
 
 
 
         // ======================================Controller====================================
         //  ===============Controller Create (POST)=====================
-        let control = "  //============================================Begin Of CONTROLLER===========================<BR><br>" +
+        let control = "//===============Controller Create (POST)=====================<br>" +
             "import " + namaModelOri + "Service from \"../service/" + namaModelOri + "-service.js\";<br>" + "const create  = async(req,res,next)=>{<br>" +
             space2 + "try {<br>" +
             space2 + space2 + "const user = req.user;<br>" +
@@ -263,7 +263,7 @@ const get = async (req, res, next) => {
             "};<br>"
 
         //  ===============Controller GET=====================
-        control = control +
+        control = control + "<br>//===============Controller GET=====================<br>" +
             "const get = async (req, res, next) => { <br> " +
             space2 + "try {<br> " +
             space2 + space2 + "const user = req.user;<br> " +
@@ -278,6 +278,7 @@ const get = async (req, res, next) => {
             "} <br>" +
 
             //  ===============Controller UPDATE (PUT)=====================
+            "<br>//===============Controller UPDATE (PUT)=====================<br>" +
             "const update = async(req, res, next)=>{<br> " +
             space2 + "try {<br> " +
             space2 + space2 + "const user = req.user;<br> " +
@@ -293,6 +294,7 @@ const get = async (req, res, next) => {
             space2 + "}<br> " +
             "}<br> " +
             //  ===============Controller Remove (REMOVE)=====================
+            "//  ===============Controller Remove (REMOVE)=====================<br>" +
             "const remove = async(req,res,next)=>{<br> " +
             space2 + "try {<br> " +
             space2 + space2 + "const user = req.user;<br> " +
@@ -307,6 +309,7 @@ const get = async (req, res, next) => {
             "}<br>" +
 
             //  ===============Controller Search (GET)=====================
+            "//===============Controller Search (GET)=====================<br>" +
             "const search = async (req, res, next) => {<br> " +
             space2 + "try {<br> " +
             space2 + space2 + "const user = req.user;<br> " +
@@ -321,7 +324,7 @@ const get = async (req, res, next) => {
             space2 + space2 + space2 + "size: req.query.size<br> " +
             space2 + space2 + "};<br> " +
 
-            space2 + space2 + "const result = await contactService.search(user, request);<br> " +
+            space2 + space2 + "const result = await " + namaModelOri + "Service.search(user, request);<br> " +
             space2 + space2 + "res.status(200).json({<br> " +
             space2 + space2 + space2 + "data: result.data,<br> " +
             space2 + space2 + space2 + "paging: result.paging<br> " +
@@ -337,18 +340,19 @@ const get = async (req, res, next) => {
             space2 + "remove,<br> " +
             space2 + "search<br> " +
             "} <br> "
-        control = control + "//===End Of Controller===<br><br>"
+        control = control + "<br>"
 
 
         // ==============================TEST==================================
-        let test = "//===============================================Begin Test==================================<br><br>" +
-            "import supertest from \"supertest\";<br> " +
+        let test = "" +
+            "<br>import supertest from \"supertest\";<br> " +
             "import { web } from \"../application/web.js\"<br> " +
             "import { logger } from \"../application/logging.js\";<br> " +
             "import { prismaClient } from \"../application/database.js\"<br>" +
-            "import { createTestUser,removeTestUser/*,removeAllTestContacts,createTestContact,getTestContact,createManyTestContacts */} from \"./util.test.js\";;<br> "
+            "import { createTestUser,removeTestUser/*,removeAllTest" + namaModel + "s,createTest" + namaModel +
+            ",getTest" + namaModel + ",createManyTest" + namaModel + "s */} from \"./util.test.js\";;<br> "
 
-        test = test + "//===Begin Test Create===<br><br>" +
+        test = test + "<br>" +
             "describe('POST /api/" + namaModelOri + "s', () => {<br>" +
             " beforeEach(async () => {<br>" +
             "await createTestUser();<br>" +
@@ -359,10 +363,6 @@ const get = async (req, res, next) => {
             "await prismaClient." + namaModelOri + ".deleteMany({<br>" +
             "where : {<br>" +
             "createBy : \"test\",<br>"
-        result.forEach(element => {
-            test = test + "//" + element.namaKolom + " : \"test\",<br>"
-        });
-
         test = test +
             "}" +
             "})<br>" +
@@ -399,17 +399,15 @@ const get = async (req, res, next) => {
         });
         test = test + "createBy : \"test\",<br>" +
             "});<br>" +
-            "logger.info(result.body);<br>" +
             "expect(result.status).toBe(400);<br>" +
             "expect(result.body.errors).toBeDefined();<br>" +
             "});<br>" +
             "});<br>"
 
-        test = test + "//===Begin Test Get===<br><br>" +
+        test = test + "<br>" +
             "describe('GET /api/" + namaModelOri + "s/:" + namaModelOri + "Id', function () {<br>" +
             "beforeEach(async () => {<br>" +
             "await createTestUser();<br>" +
-            "// /*createTest" + namaModelOri + ";*/<br>" +
             "await prismaClient." + namaModelOri + ".create({<br>" +
             "data: {<br>"
         result.forEach(element => {
@@ -421,7 +419,6 @@ const get = async (req, res, next) => {
             "})<br>" +
 
             "afterEach(async () => {<br>" +
-            "// /* removeAllTest" + namaModelOri + "*/<br> " +
             "await prismaClient." + namaModelOri + ".deleteMany({<br> " +
             "where : {<br> " +
             "createBy : \"test\",<br>"
@@ -437,7 +434,7 @@ const get = async (req, res, next) => {
 
             "it('should can get " + namaModelOri + "', async () => {<br>" +
             "const test" + namaModel + " = await prismaClient." + namaModelOri + ".findFirst({" + "<br>" +
-            "where: {" + "//createBy : \"test\",<br>"
+            "where: {" + "<br>//createBy : \"test\",<br>"
         result.forEach(element => {
             test = test + element.namaKolom + " : \"test\",<br>"
         });
@@ -458,7 +455,7 @@ const get = async (req, res, next) => {
         test = test + "});<br>"
 
         // ===========TEST UPDATE===========
-        test = test + "//===Begin Test Update===<br><br>" +
+        test = test + "<br>" +
             "describe('PUT /api/" + namaModelOri + "/:" + namaModelOri + "Id', () => {<br>" +
             "beforeEach(async () => {<br>" +
             "await createTestUser();<br>" +
@@ -496,13 +493,11 @@ const get = async (req, res, next) => {
             ".set('Authorization', 'test')<br> " +
             ".send({<br> "
         result.forEach(element => {
-            test = "//" + test + element.namaKolom + " : \"testEdit\",<br>"
+            test = "" + test + element.namaKolom + " : \"testEdit\",<br>"
         });
 
         test = test +
-            "})<br> " +
-            "logger.info(test" + namaModel + ");<br> " +
-            "logger.info(result.body);<br> " +
+            "})<br> " + "logger.info(test" + namaModel + ");<br> " +
             "expect(result.status).toBe(200);<br> "
 
         result.forEach(element => {
@@ -512,9 +507,7 @@ const get = async (req, res, next) => {
         test = test + "//test delete<br><br>" +
             "describe('Delete api/" + namaModelOri + "/:" + namaModelOri + "Id', () => {<br> " +
             "beforeEach(async () => {<br> " +
-            "await createTestUser();<br> " +
-            "// /*createTest" + namaModelOri + ";*/<br>" +
-            "await prismaClient." + namaModelOri + ".create({<br>" +
+            "await createTestUser();<br> " + "await prismaClient." + namaModelOri + ".create({<br>" +
             "data: {<br>" + "createBy : \"test\",<br>"
         result.forEach(element => {
             test = "//" + test + element.namaKolom + " : \"test\",<br>"
@@ -524,7 +517,7 @@ const get = async (req, res, next) => {
             "})<br> " + "})<br> " +
 
             "afterEach(async () => {<br> " +
-            "// /* removeAllTest" + namaModelOri + "*/<br> " +
+            "// rem*oveAllTest" + namaModelOri + "<br> " +
             "await prismaClient." + namaModelOri + ".deleteMany({<br> " +
             "where : {<br> " + "createBy : \"test\",<br>"
 
@@ -535,7 +528,7 @@ const get = async (req, res, next) => {
             "await removeTestUser();<br>" +
             "})<br> " +
             " it('should can delete " + namaModelOri + "', async() => {<br> " +
-            "let  test" + namaModel + " = /*await getTestContact();///manual coyyyy*/<br> " +
+            "let  test" + namaModel + " = /*await getTest" + namaModel + "();///manual coyyyy*/<br> " +
             "await prismaClient." + namaModelOri + ".findFirst({" +
             "where: {" + "createBy : \"test\",<br>"
 
@@ -572,7 +565,7 @@ const get = async (req, res, next) => {
 
         test = test +
             "//----------- search test--------------<br> " +
-            "describe('GET /api/contacts', function () {<br> " +
+            "describe('GET /api/" + namaModelOri + "s', function () {<br> " +
             "beforeEach(async () => {<br> " +
             "await createTestUser();<br> " +
             "//aw*ait createManyTest" + namaModel + "s();<br> " +
@@ -621,49 +614,44 @@ const get = async (req, res, next) => {
             "expect(result.body.paging.page).toBe(2);<br> " +
             "expect(result.body.paging.total_page).toBe(2);<br> " +
             "expect(result.body.paging.total_item).toBe(15);<br> " +
-            "});<br><br>" 
+            "});<br><br>"
 
-           
-            result.forEach(element => {
-                test = test + 
-                "<br>it('should can search using "+element.namaKolom+"', async () => {<br> " +
+
+        result.forEach(element => {
+            test = test +
+                "<br>it('should can search using " + element.namaKolom + "', async () => {<br> " +
                 "const result = await supertest(web)<br> " +
                 ".get('/api/" + namaModelOri + "s')<br> " +
                 ".query({<br> " +
-                ""+element.namaKolom+": \"test1\" //sesuaikan yaaa<br> " +
-                "})<br> " +
-                ".set('Authorization', 'test');<br> " +
-                "logger.info(result.body);<br> " +
+                "" + element.namaKolom + ": \"test1\" //sesuaikan yaaa<br> " +
+                "})<br> " +".set('Authorization', 'test');<br> " +
                 "expect(result.status).toBe(200);<br> " +
                 "expect(result.body.data.length).toBe(6);<br> " +
                 "expect(result.body.paging.page).toBe(1);<br> " +
                 "expect(result.body.paging.total_page).toBe(1);<br> " +
                 "expect(result.body.paging.total_item).toBe(6);<br> " +
                 "});<br>"
-            });
+        });
 
 
-            test = test +
+        test = test +
             "<br>it('should can search using all kriteria', async () => {<br> " +
-                "const result = await supertest(web)<br> " +
-                ".get('/api/"+namaModelOri+"s')<br> " +
-                ".query({<br> " 
-                result.forEach(element => {
-                    test = test + element.namaKolom + " : \"test1\",<br>"
-                });
-                 test = test +   "})<br> " +
-                    ".set('Authorization', 'test');<br> " +
-        
-                    "logger.info(result.body);<br> " +
-        
-                    "expect(result.status).toBe(200);<br> " +
-                    "expect(result.body.paging.page).toBe(1);<br> " +
-                    "expect(result.body.paging.total_page).toBe(1);<br> " +
-                    "});<br>"
+            "const result = await supertest(web)<br> " +
+            ".get('/api/" + namaModelOri + "s')<br> " +
+            ".query({<br> "
+        result.forEach(element => {
+            test = test + element.namaKolom + " : \"test1\",<br>"
+        });
+        test = test + "})<br> " +
+            ".set('Authorization', 'test');<br> " +
+            "expect(result.status).toBe(200);<br> " +
+            "expect(result.body.paging.page).toBe(1);<br> " +
+            "expect(result.body.paging.total_page).toBe(1);<br> " +
+            "});<br>"
 
-        test = test + "})<br>"//==============================END OF TEST=========================<br>"
+        test = test + "})<br>"
 
-        let route = "//===================================== Begin Of Rote ====================<br><br>" +
+        let route = "<br>" +
             "import " + namaModelOri + "Controller from \"../controller/" + namaModelOri + "-controller.js\";<br><br><br><br>" +
             "userRouter.post('/api/" + namaModelOri + "s'," + namaModelOri + "Controller.create);<br>" +
             "userRouter.get('/api/" + namaModelOri + "s/:" + namaModelOri + "Id', " + namaModelOri + "Controller.get);<br>" +
@@ -671,18 +659,24 @@ const get = async (req, res, next) => {
             "userRouter.delete('/api/" + namaModelOri + "s/:" + namaModelOri + "Id', " + namaModelOri + "Controller.remove);<br>" +
             "userRouter.get('/api/" + namaModelOri + "s', " + namaModelOri + "Controller.search);<br>"
 
-        route = route + "//==============================END OF ROUTE=========================<br>"
-
-        let doskoman = "<br><br><br><br>//===============CREATE FILE=============== <br>" +
+        let doskoman = "<br>" +
             "type nul > src/validation/" + namaModelOri + "-validation.js <br>" +
             "type nul > src/service/" + namaModelOri + "-service.js <br>" +
             "type nul > src/controller/" + namaModelOri + "-controller.js <br>" +
             "type nul > src/test/" + namaModelOri + ".test.js <br> dir<br>";
 
-        let z = "//" + service + service2 + control + model + validate + test + route + doskoman
-        z = z + "ppppp"
+        let z = ''
+        z = z +
+            "//============================MODEL====================<br><br>" + model +
+            "//============================VALIDATE====================<br><br>" + validate +
+            "//============================SERVICE====================<br><br>" + service + service2 +
+            "//============================CONTROLLER====================<br><br>" + control +
+            "//============================TEST====================<br><br>" + test +
+            "//============================ROUTE====================<br><br>" + route +
+            "//============================FILE CREATE====================<br><br>" + doskoman
+            z="data kecil"
         logger.info(z)
-        res.status(200).send(/*service + service2 +control + model + validate + */ test /*+ route + doskoman*/)
+        res.status(200).send(z)
     } catch (e) {
         next(e);
     }

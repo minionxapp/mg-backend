@@ -1,4 +1,5 @@
 import { prismaClient } from "../application/database.js";
+// import { log ger } from "../application/logging.js";
 
 /*
 akan mngecek semua request, dengan memeriksan parameter token yang dikirimkan pada  Authorization
@@ -11,7 +12,7 @@ export const authMiddleware =async (req,res,next)=>{
     const token = req.get('Authorization');
     if(!token){
         res.status(401).json({
-            errors : "Unauthorozed"
+            errors : "Unauthorized"
         }).end();
     }else{
         const user = await prismaClient.user.findFirst({

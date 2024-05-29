@@ -1,8 +1,4 @@
-
-
-//================================================Begin Of Service============================
-
-
+// ===============SERVICE CREATE====
 import { prismaClient } from "../application/database.js";
 import { logger } from "../application/logging.js";
 import { ResponseError } from "../error/response-error.js";
@@ -24,6 +20,7 @@ const create = async (user, request) => {
 }
 
 
+//===============SERVICE GET====
 const get = async (user, personId) => {
     const person = validat(getPersonValidation, personId);
     const Person = await prismaClient.person.findFirst({
@@ -44,6 +41,7 @@ const get = async (user, personId) => {
     return Person;
 }
 
+//===============SERVICE UPDATE=====================
 const update = async (user, request) => {
     const person = validat(updatePersonValidation, request);
     person.updateBy = user.username;
@@ -74,6 +72,7 @@ const update = async (user, request) => {
     })
 }
 
+//===============SERVICE REMOVE=====================
 const remove = async (user, personId) => {
     personId = validat(getPersonValidation, personId);
     const totalInDatabase = await prismaClient.person.count({
@@ -92,15 +91,16 @@ const remove = async (user, personId) => {
     })
 }
 
+//===============SERVICE SEARCH=====================
 const search = async (user, request) => {
     request = validat(searchPersonValidation, request);
     // 1 ((page - 1) * size) = 0
     // 2 ((page - 1) * size) = 10
     const skip = (request.page - 1) * request.size;
     const filters = [];
-    // filters.push({
-    //     createBy: user.username
-    // })
+    filters.push({
+        // /*username: user.username*/
+    })
     if (request.nama) {
         filters.push({
             nama: {
@@ -122,7 +122,6 @@ const search = async (user, request) => {
             }
         });
     }
-
     const person = await prismaClient.person.findMany({
         where: {
             AND: filters
@@ -153,6 +152,3 @@ export default {
     remove,
     search
 }
-
-
-//====End Of SERVICE===

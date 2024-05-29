@@ -218,7 +218,7 @@ describe('GET /api/contacts', function () {
         }
     })
     afterEach(async () => {
-        //aw ait removeAllTestPersons();
+        //aw*ait removeAllTestPersons();
         await prismaClient.person.deleteMany({
             where: {
                 createBy: "test"
@@ -250,6 +250,7 @@ describe('GET /api/contacts', function () {
         expect(result.body.paging.total_item).toBe(15);
     });
 
+
     it('should can search using nama', async () => {
         const result = await supertest(web)
             .get('/api/persons')
@@ -263,7 +264,9 @@ describe('GET /api/contacts', function () {
         expect(result.body.paging.page).toBe(1);
         expect(result.body.paging.total_page).toBe(1);
         expect(result.body.paging.total_item).toBe(6);
-    }); it('should can search using alamat', async () => {
+    });
+
+    it('should can search using alamat', async () => {
         const result = await supertest(web)
             .get('/api/persons')
             .query({
@@ -276,7 +279,9 @@ describe('GET /api/contacts', function () {
         expect(result.body.paging.page).toBe(1);
         expect(result.body.paging.total_page).toBe(1);
         expect(result.body.paging.total_item).toBe(6);
-    }); it('should can search using nik', async () => {
+    });
+
+    it('should can search using nik', async () => {
         const result = await supertest(web)
             .get('/api/persons')
             .query({
@@ -289,7 +294,8 @@ describe('GET /api/contacts', function () {
         expect(result.body.paging.page).toBe(1);
         expect(result.body.paging.total_page).toBe(1);
         expect(result.body.paging.total_item).toBe(6);
-    }); 
+    });
+
     it('should can search using all kriteria', async () => {
         const result = await supertest(web)
             .get('/api/persons')

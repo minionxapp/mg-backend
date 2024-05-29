@@ -2,8 +2,7 @@ import supertest from "supertest";
 import { web } from "../application/web.js"
 import { logger } from "../application/logging.js";
 import { prismaClient } from "../application/database.js"
-import { createTestUser, removeTestUser/*,removeAllTestContacts,createTestContact,getTestContact,createManyTestContacts */ } from "./util.test.js";;
-//===Begin Test Create===
+import { createTestUser, removeTestUser/*,removeAllTestPersons,createTestPerson,getTestPerson,createManyTestPersons */ } from "./util.test.js";;
 
 describe('POST /api/persons', () => {
     beforeEach(async () => {
@@ -11,14 +10,13 @@ describe('POST /api/persons', () => {
     });
     afterEach(async () => {
         await removeTestUser();
-        /*remove allTestperson*/
+        // /*remove allTestperson*/
         await prismaClient.person.deleteMany({
             where: {
-                createBy: "test"              
+                createBy: "test",
             }
         })
     });
-
     it('it should can create new person', async () => {
         const result = await supertest(web)
             .post('/api/persons')
@@ -27,7 +25,6 @@ describe('POST /api/persons', () => {
                 nama: "test",
                 alamat: "test",
                 nik: "test",
-                // createBy: "test",//suda di ser dari service dala object person
             });
         logger.info(result);
         expect(result.status).toBe(200);
@@ -44,19 +41,16 @@ describe('POST /api/persons', () => {
                 nama: "",
                 alamat: "",
                 nik: "",
-                // createBy: "test",
+                createBy: "test",
             });
-        logger.info(result.body);
         expect(result.status).toBe(400);
         expect(result.body.errors).toBeDefined();
     });
 });
-//===Begin Test Get=========================================================
 
 describe('GET /api/persons/:personId', function () {
     beforeEach(async () => {
         await createTestUser();
-        // /*createTestperson;*/
         await prismaClient.person.create({
             data: {
                 nama: "test",
@@ -67,7 +61,6 @@ describe('GET /api/persons/:personId', function () {
         })
     })
     afterEach(async () => {
-        // /* removeAllTestperson*/
         await prismaClient.person.deleteMany({
             where: {
                 createBy: "test",
@@ -80,20 +73,16 @@ describe('GET /api/persons/:personId', function () {
     })
     it('should can get person', async () => {
         const testPerson = await prismaClient.person.findFirst({
-            where: {//
-                // createBy : "test",
+            where: {
+                //createBy : "test",
                 nama: "test",
-                // alamat: "test",
-                // nik: "test",
+                alamat: "test",
+                nik: "test",
             }
         })
-
-        
-        logger.info(testPerson)
         const result = await supertest(web)
             .get("/api/persons/" + testPerson.id)
             .set('Authorization', 'test');
-            
         expect(result.status).toBe(200);
         expect(result.body.data.id).toBe(testPerson.id);
         expect(result.body.data.nama).toBe(testPerson.nama);
@@ -101,7 +90,6 @@ describe('GET /api/persons/:personId', function () {
         expect(result.body.data.nik).toBe(testPerson.nik);
     });
 });
-//===Begin Test Update===
 
 describe('PUT /api/person/:personId', () => {
     beforeEach(async () => {
@@ -117,18 +105,18 @@ describe('PUT /api/person/:personId', () => {
         })
     })
     afterEach(async () => {
-        /* removeAllTestperson*/
+        // /* removeAllTestperson*/
         await prismaClient.person.deleteMany({
             where: {
-                createBy: "test",                
+                createBy: "test",
             }
         })
         await removeTestUser();
     })
     it('it should can update existing person', async () => {
         const testPerson = await prismaClient.person.findFirst({
-            where: {//
-                createBy : "test"               
+            where: {
+                createBy: "test",
             }
         })
         const result = await supertest(web)
@@ -139,10 +127,7 @@ describe('PUT /api/person/:personId', () => {
                 alamat: "testEdit",
                 nik: "testEdit",
             })
-            logger.info(testPerson);
-        logger.info("==============QQ=========="+testPerson.id);
-        logger.info(result.body);
-        logger.info("==============QQ2==========");
+        logger.info(testPerson);
         expect(result.status).toBe(200);
         expect(result.body.data.nama).toBe("testEdit");
         expect(result.body.data.alamat).toBe("testEdit");
@@ -155,7 +140,6 @@ describe('PUT /api/person/:personId', () => {
 describe('Delete api/person/:personId', () => {
     beforeEach(async () => {
         await createTestUser();
-        // /*createTestperson;*/
         await prismaClient.person.create({
             data: {
                 createBy: "test",
@@ -166,25 +150,19 @@ describe('Delete api/person/:personId', () => {
         })
     })
     afterEach(async () => {
-        // /* removeAllTestperson*/
+        // rem*oveAllTestperson
         await prismaClient.person.deleteMany({
             where: {
                 createBy: "test",
-                // nama: "test",
-                // alamat: "test",
-                // nik: "test",
             }
         })
         await removeTestUser();
     })
     it('should can delete person', async () => {
-        let testPerson = /*await getTestContact();///manual coyyyy*/
+        let testPerson = /*await getTestPerson();///manual coyyyy*/
             await prismaClient.person.findFirst({
                 where: {
                     createBy: "test",
-                    // nama: "test",
-                    // alamat: "test",
-                    // nik: "test",
                 }
             })
         const result = await supertest(web)
@@ -194,12 +172,7 @@ describe('Delete api/person/:personId', () => {
         expect(result.body.data).toBe("OK");
         testPerson =
             await prismaClient.person.findFirst({
-                where: {
-                    createBy: "test",
-                    // nama: "test",
-                    // alamat: "test",
-                    // nik: "test",
-                }
+                where: { createBy: "test", }
             })
         expect(testPerson).toBeNull();
     });
@@ -208,9 +181,6 @@ describe('Delete api/person/:personId', () => {
             await prismaClient.person.findFirst({
                 where: {
                     createBy: "test",
-                    // nama: "test",
-                    // alamat: "test",
-                    // nik: "test",
                 }
             })
         const result = await supertest(web)
@@ -219,3 +189,109 @@ describe('Delete api/person/:personId', () => {
         expect(result.status).toBe(404);
     });
 });
+//----------- search test--------------
+describe('GET /api/persons', function () {
+    beforeEach(async () => {
+        await createTestUser();
+        //aw*ait createManyTestPersons();
+        for (let i = 0; i < 15; i++) {
+            await prismaClient.person.create({
+                data: {
+                    nama: "test" + i,
+                    alamat: "test" + i,
+                    nik: "test" + i,
+                    createBy: "test"
+                }
+            })
+        }
+    })
+    afterEach(async () => {
+        //aw*ait removeAllTestPersons();
+        await prismaClient.person.deleteMany({
+            where: {
+                createBy: "test"
+            }
+        }); await removeTestUser();
+    })
+    it('should can search without parameter', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .set('Authorization', 'test');
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(10);
+        expect(result.body.paging.page).toBe(1);
+        expect(result.body.paging.total_page).toBe(2);
+        expect(result.body.paging.total_item).toBe(15);
+    });
+
+    it('should can search to page 2', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .query({
+                page: 2
+            })
+            .set('Authorization', 'test');
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(5);
+        expect(result.body.paging.page).toBe(2);
+        expect(result.body.paging.total_page).toBe(2);
+        expect(result.body.paging.total_item).toBe(15);
+    });
+
+
+    it('should can search using nama', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .query({
+                nama: "test1" //sesuaikan yaaa
+            })
+            .set('Authorization', 'test');
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    });
+
+    it('should can search using alamat', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .query({
+                alamat: "test1" //sesuaikan yaaa
+            })
+            .set('Authorization', 'test');
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    });
+
+    it('should can search using nik', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .query({
+                nik: "test1" //sesuaikan yaaa
+            })
+            .set('Authorization', 'test');
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    });
+
+    it('should can search using all kriteria', async () => {
+        const result = await supertest(web)
+            .get('/api/persons')
+            .query({
+                nama: "test1",
+                alamat: "test1",
+                nik: "test1",
+            })
+            .set('Authorization', 'test');
+        expect(result.status).toBe(200);
+        expect(result.body.paging.page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+    });
+})

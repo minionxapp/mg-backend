@@ -8,14 +8,12 @@ import { v4 as uuid } from 'uuid';
 import { registerUserValidation, loginUserValidation, getUserValidation, updateUserValidation } from "../validation/user-validation.js";
 
 const register = async (request) => {
-    const user = validat(registerUserValidation, request);
-
+    const user = validat(registerUserValidation, request)
     const countUser = await prismaClient.user.count({
         where: {
             username: user.username
         }
-    })
-    // const countUser1 = await prismaClient.teman
+    });
     if (countUser === 1) {
         throw new ResponseError(400, 'User already exist');
     }

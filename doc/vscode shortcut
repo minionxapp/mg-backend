@@ -9,3 +9,7 @@ npx jest user.test.js -t "DELETE /api/users/logout"
 npx jest user.test.js -t "PATCH /api/users/current"
 
 npx jest user.test.js -t "PATCH /api/users/current should can update user name and password"
+
+
+//catatat coding
+npx prisma migrate dev --> untuk migrasi
