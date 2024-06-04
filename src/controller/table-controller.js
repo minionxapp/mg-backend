@@ -373,7 +373,7 @@ const get = async (req, res, next) => {
             ".set('Authorization', 'test')<br>" +
             ".send({<br>"
         result.forEach(element => {
-            test = test + element.namaKolom + " : \"test\",<br>"
+            test = test + element.namaKolom + " : \""+element.testValue+"\",<br>"
         });
         test = test + "});<br>" +
             "logger.info(result);<br>" +
@@ -381,7 +381,7 @@ const get = async (req, res, next) => {
             "expect(result.body.data.id).toBeDefined();<br>"
 
         result.forEach(element => {
-            test = test + "expect(result.body.data." + element.namaKolom + ").toBe(\"test\");<br>"
+            test = test + "expect(result.body.data." + element.namaKolom + ").toBe(\""+element.testValue+"\");<br>"
         });
 
         test = test +
@@ -411,7 +411,7 @@ const get = async (req, res, next) => {
             "await prismaClient." + namaModelOri + ".create({<br>" +
             "data: {<br>"
         result.forEach(element => {
-            test = test + element.namaKolom + " : \"test\",<br>"
+            test = test + element.namaKolom + " : \""+element.testValue+"\",<br>"
         });
         test = test + "createBy : \"test\",<br>" +
             "}<br>" +
@@ -423,7 +423,7 @@ const get = async (req, res, next) => {
             "where : {<br> " +
             "createBy : \"test\",<br>"
         result.forEach(element => {
-            test = "//" + test + element.namaKolom + " : \"test\",<br>"
+            test = "//" + test + element.namaKolom + " : \""+element.testValue+"\",<br>"
         });
 
         test = test +
@@ -436,7 +436,7 @@ const get = async (req, res, next) => {
             "const test" + namaModel + " = await prismaClient." + namaModelOri + ".findFirst({" + "<br>" +
             "where: {" + "<br>//createBy : \"test\",<br>"
         result.forEach(element => {
-            test = test + element.namaKolom + " : \"test\",<br>"
+            test = test + element.namaKolom + " : \""+element.testValue+"\",<br>"
         });
         test = test +
             "}})<br>" +
@@ -463,7 +463,7 @@ const get = async (req, res, next) => {
             "await prismaClient." + namaModelOri + ".create({<br>" +
             "data: {<br>" + "createBy : \"test\",<br>"
         result.forEach(element => {
-            test = test + element.namaKolom + " : \"test\",<br>"
+            test = test + element.namaKolom + " : \""+element.testValue+"\",<br>"
         });
         test = test +
             "}<br>" +
@@ -481,7 +481,7 @@ const get = async (req, res, next) => {
             "await removeTestUser();<br>" +
             "})<br>" +
             "it('it should can update existing " + namaModelOri + "', async() => {<br> " +
-            "const testPerson = await prismaClient.person.findFirst({" +
+            "const test"+namaModel+" = await prismaClient."+namaModelOri+".findFirst({" +
             "where: {" + "createBy : \"test\",<br>"
 
 
@@ -493,7 +493,7 @@ const get = async (req, res, next) => {
             ".set('Authorization', 'test')<br> " +
             ".send({<br> "
         result.forEach(element => {
-            test = "" + test + element.namaKolom + " : \"testEdit\",<br>"
+            test = "" + test + element.namaKolom + " : \""+element.testValue+"X\",<br>"
         });
 
         test = test +
@@ -501,7 +501,7 @@ const get = async (req, res, next) => {
             "expect(result.status).toBe(200);<br> "
 
         result.forEach(element => {
-            test = test + "expect(result.body.data." + element.namaKolom + ").toBe(\"testEdit\"" + ");<br>"
+            test = test + "expect(result.body.data." + element.namaKolom + ").toBe(\""+element.testValue+"X\"" + ");<br>"
         });
         test = test + " });<br>" + "});<br><br>"
         test = test + "//test delete<br><br>" +
@@ -510,7 +510,7 @@ const get = async (req, res, next) => {
             "await createTestUser();<br> " + "await prismaClient." + namaModelOri + ".create({<br>" +
             "data: {<br>" + "createBy : \"test\",<br>"
         result.forEach(element => {
-            test = "//" + test + element.namaKolom + " : \"test\",<br>"
+            test = "//" + test + element.namaKolom + " : \""+element.testValue+"\",<br>"
         });
         test = test +
             "}<br>" +
@@ -573,7 +573,7 @@ const get = async (req, res, next) => {
             "await prismaClient." + namaModelOri + ".create({<br> " +
             "data: {<br> "
         result.forEach(element => {
-            test = test + element.namaKolom + " : \"test\"+i,<br>"
+            test = test + element.namaKolom + " : \""+element.testValue+"\"+i,<br>"
         });
         test = test + "createBy: \"test\"" + "}<br> " +
             "})<br> " +
@@ -623,7 +623,7 @@ const get = async (req, res, next) => {
                 "const result = await supertest(web)<br> " +
                 ".get('/api/" + namaModelOri + "s')<br> " +
                 ".query({<br> " +
-                "" + element.namaKolom + ": \"test1\" //sesuaikan yaaa<br> " +
+                "" + element.namaKolom + ": \""+element.testValue+"1\" //sesuaikan yaaa<br> " +
                 "})<br> " +".set('Authorization', 'test');<br> " +
                 "expect(result.status).toBe(200);<br> " +
                 "expect(result.body.data.length).toBe(6);<br> " +
@@ -640,7 +640,7 @@ const get = async (req, res, next) => {
             ".get('/api/" + namaModelOri + "s')<br> " +
             ".query({<br> "
         result.forEach(element => {
-            test = test + element.namaKolom + " : \"test1\",<br>"
+            test = test + element.namaKolom + " : \""+element.testValue+"1\",<br>"
         });
         test = test + "})<br> " +
             ".set('Authorization', 'test');<br> " +
@@ -674,7 +674,7 @@ const get = async (req, res, next) => {
             "//============================TEST====================<br><br>" + test +
             "//============================ROUTE====================<br><br>" + route +
             "//============================FILE CREATE====================<br><br>" + doskoman
-            z="data kecil"
+            // z="data kecil"
         logger.info(z)
         res.status(200).send(z)
     } catch (e) {

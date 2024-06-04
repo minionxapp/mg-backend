@@ -4,6 +4,8 @@ import { authMiddleware } from "../middleware/auth-middleware.js";
 import contactController from "../controller/contact-controller.js";
 
 import personController from "../controller/person-controller.js";
+import bankController from "../controller/bank-controller.js";
+
 
 const userRouter = new express.Router();
 userRouter.use(authMiddleware);
@@ -21,6 +23,14 @@ userRouter.delete('/api/contacts/:contactId', contactController.remove);
 userRouter.get('/api/contacts', contactController.search);
 
 
+
+
+// bank
+userRouter.post('/api/banks',bankController.create);
+userRouter.get('/api/banks/:bankId', bankController.get);
+userRouter.put('/api/banks/:bankId', bankController.update);
+userRouter.delete('/api/banks/:bankId', bankController.remove);
+userRouter.get('/api/banks', bankController.search);
 
 
 

@@ -67,6 +67,7 @@ model Table{
   removeResponse String @db.VarChar(2) @default("Y")
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  testValue String @db.VarChar(100) @default("test")
   @@map("Tables")
 }
 
@@ -82,4 +83,22 @@ model Person{
   updateBy String? @db.VarChar(20)
 
   @@map("persons")
+}
+
+
+//testing scrip generator
+//============================MODEL====================
+model Bank{
+  id Int @id @default(autoincrement())
+  kode String @db.VarChar(4)
+  nama String @db.VarChar(50)
+  jenis String @db.VarChar(20)
+  status String @db.VarChar(2)
+  // keterangan String @db.VarChar(250)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  createBy String? @db.VarChar(20)
+  updateBy String? @db.VarChar(20)
+
+  @@map("banks")
 }
