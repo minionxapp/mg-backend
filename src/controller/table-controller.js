@@ -1,6 +1,18 @@
 import tableService from "../service/table-service.js";
 import { logger } from "../application/logging.js";
 
+const create = async(req,res,next)=>{
+    try {
+                    const user = req.user;
+                    const request = req.body;
+                    const result = await tableService.create(user,request);
+                     res.status(200).json({
+                    data : result
+                    })
+    } catch (e) {
+                    next(e)
+    }
+};
 
 const get = async (req, res, next) => {
     try {
@@ -683,5 +695,6 @@ const get = async (req, res, next) => {
 }
 
 export default {
-    get
+    get,
+    create
 }
