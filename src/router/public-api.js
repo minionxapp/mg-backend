@@ -8,6 +8,9 @@ publicRouter.post('/api/users/login',userController.login);
 publicRouter.get('/api/tables/:tableName',tableController.get);
 
 
+// publicRouter.get('/api/tablesx',tableController.getAll);
+
+
 
 export{
     publicRouter

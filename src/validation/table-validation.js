@@ -42,7 +42,7 @@ const updateTableValidation = Joi.object({
 });
 
 
-const getTableValidation = Joi.number().positive().required();// engga pake object,pake ID
+const getTableValidation = Joi.number().positive().optional();// engga pake object,pake ID
 
 const searchTableValidation = Joi.object({
     page: Joi.number().min(1).positive().default(1),

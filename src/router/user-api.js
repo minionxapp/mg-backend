@@ -45,6 +45,7 @@ userRouter.get('/api/persons', personController.search);
 
 
 userRouter.post('/api/tables',tableController.create);
+userRouter.get('/api/tablesx/:tableName',tableController.getAll);
 export{
     userRouter
 }
