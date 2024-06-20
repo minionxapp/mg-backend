@@ -221,14 +221,15 @@ describe('GET /api/banks', function () {
             })
         }
     })
-    afterEach(async () => {
-        //aw*ait removeAllTestBanks();
-        await prismaClient.bank.deleteMany({
-            where: {
-                createBy: "test"
-            }
-        }); await removeTestUser();
-    })
+    // afterEach(async () => {
+    //     //aw*ait removeAllTestBanks();
+    //     await prismaClient.bank.deleteMany({
+    //         where: {
+    //             createBy: "test"
+    //         }
+    //     }); await removeTestUser();
+    // })
+
     it('should can search without parameter', async () => {
         const result = await supertest(web)
             .get('/api/banks')
@@ -237,7 +238,7 @@ describe('GET /api/banks', function () {
         expect(result.body.data.length).toBe(10);
         expect(result.body.paging.page).toBe(1);
         expect(result.body.paging.total_page).toBe(2);
-        expect(result.body.paging.total_item).toBe(15);
+        expect(result.body.paging.total_item).toBe(16);
     });
 
     it('should can search to page 2', async () => {

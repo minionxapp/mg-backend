@@ -68,7 +68,7 @@ const search = async (req, res, next) => {
             page: req.query.page,
             size: req.query.size
         };
-        logger.info("===============================================")
+        logger.info("search ==============================================="+req.query.page+" "+req.query.nama)
         const result = await bankService.search(user, request);
         res.status(200).json({
             data: result.data,

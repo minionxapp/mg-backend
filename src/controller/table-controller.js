@@ -698,23 +698,42 @@ const get = async (req, res, next) => {
 //===============Controller GET=====================
 const getAll = async (req, res, next) => {
     const tableName = req.params.tableName;
-    logger.info("############tableName#  "+tableName)
+    // logger.info("############tableName#  "+tableName)
     try {
         const user = req.user;
-        const tableId = req.params.tableId;
+        // const tableId = req.params.tableId;
         const result = await tableService.getAll(user, tableName);
         res.status(200).json({
             data: result
             })
-        logger.info("Result ===getAll=================================="+tableName)
-        logger.info(result)
+        // logger.info("Result ===getAll=================================="+tableName)
+        // logger.info(result)
     } catch (e) {
         next(e);
     }
 }
 
+
+
+const getAllName = async (req, res, next) => {
+    // const tableName = req.params.tableName;
+    logger.info("############table____Name#  ")
+    try {
+        const user = req.user;
+        // const tableId = req.params.tableId;
+        const result = await tableService.getTableName();
+        res.status(200).json({
+            data: result
+            })
+            logger.info("Result ===getAll==================================")
+            logger.info(JSON.stringify(result))
+            } catch (e) {
+                next(e);
+    }
+}
 export default {
     get,
     getAll,
-    create
+    create,
+    getAllName
 }

@@ -309,9 +309,19 @@ const search2 = async (user, request) => {
 }
 
 
+const getTableName = async () => {
+  const Table = await prismaClient.table.findMany({
+    // where: {
+    //   namaTable: tableName
+    // },
+    distinct: ['namaTable'],
+    select: {
+      namaTable: true,
+    }
+  })
+  return Table
 
-
-
+}
 
 
 export default {
@@ -321,6 +331,7 @@ export default {
   getAll,
   update,
   remove,
-  search2
+  search2,
+  getTableName
 
 }

@@ -62,6 +62,28 @@ describe('POST /api/tables', () => {
     });
 
 
+    it('should can get Table Name', async () => {
+        const tables = await prismaClient.table.findMany({
+            // where: {
+            //     //createBy : "test",
+            //     kode: "kd",
+            //     nama: "nama",
+            //     jenis: "konven",
+            //     status: "Y",
+            // }
+        })
+        const result = await supertest(web)
+            .get("/api/tableAll")
+            .set('Authorization', 'test');
+
+        expect(result.status).toBe(200);
+        // expect(result.body.data.id).toBe(testBank.id);
+        // expect(result.body.data.kode).toBe(testBank.kode);
+        // expect(result.body.data.nama).toBe(testBank.nama);
+        // expect(result.body.data.jenis).toBe(testBank.jenis);
+        // expect(result.body.data.status).toBe(testBank.status);
+    });
+
 })
 
 
