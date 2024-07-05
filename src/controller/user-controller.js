@@ -65,11 +65,24 @@ const logout = async (req, res, next) => {
     }
 }
 
+const ceklogin = async (req, res, next) => {
+    try {
+        const token = req.user.token;
+        // parameter bentunya string bukan object, untuk perhatian
+        const result = await userService.ceklogin(token);
+        res.status(200).json({
+            data: result
+        })
+    } catch (e) {
+        next(e)
+    }
+}
 
 export default {
     register,
     login,
     get,
     update,
-    logout
+    logout,
+    ceklogin
 }

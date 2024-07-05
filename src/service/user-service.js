@@ -33,7 +33,8 @@ const login = async (request) => {
     const loginRequest = validat(loginUserValidation, request);
     const user = await prismaClient.user.findUnique({
         where: {
-            username: loginRequest.username
+            username: loginRequest.username,
+            status : "Y"
         },
         select: {
             username: true,
@@ -59,7 +60,9 @@ const login = async (request) => {
             username: user.username
         },
         select: {
-            token: true
+            token: true,
+            role :true,
+            status :true
         }
     });
 }
@@ -143,11 +146,40 @@ const logout = async (username) => {
 }
 
 
+const ceklogin = async (token) => {
+    username = validat(getUserValidation, username);
+
+    const user = await prismaClient.user.findUnique({
+        where: {
+            token : token
+        }
+    });
+
+    if (!user) {
+        throw new ResponseError(404, "user is not found");
+    }
+    return user
+
+    // return prismaClient.user.update({
+    //     where: {
+    //         username: username
+    //     },
+    //     data: {
+    //         token: null
+    //     },
+    //     select: {
+    //         username: true
+    //     }
+    // })
+}
+
+
 
 export default {
     register,
     login,
     get,
     update,
-    logout
+    logout,
+    ceklogin
 }

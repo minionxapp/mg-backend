@@ -1,5 +1,4 @@
 //===============Controller Create (POST)=====================
-import { logger } from "../application/logging.js";
 import bankService from "../service/bank-service.js";
 const create = async (req, res, next) => {
     try {
@@ -68,7 +67,6 @@ const search = async (req, res, next) => {
             page: req.query.page,
             size: req.query.size
         };
-        logger.info("search ==============================================="+req.query.page+" "+req.query.nama)
         const result = await bankService.search(user, request);
         res.status(200).json({
             data: result.data,

@@ -125,6 +125,7 @@ describe('PUT /api/bank/:bankId', () => {
         })
         await removeTestUser();
     })
+
     it('it should can update existing bank', async () => {
         const testBank = await prismaClient.bank.findFirst({
             where: {
@@ -221,14 +222,14 @@ describe('GET /api/banks', function () {
             })
         }
     })
-    // afterEach(async () => {
-    //     //aw*ait removeAllTestBanks();
-    //     await prismaClient.bank.deleteMany({
-    //         where: {
-    //             createBy: "test"
-    //         }
-    //     }); await removeTestUser();
-    // })
+    afterEach(async () => {
+        //aw*ait removeAllTestBanks();
+        await prismaClient.bank.deleteMany({
+            where: {
+                createBy: "test"
+            }
+        }); await removeTestUser();
+    })
 
     it('should can search without parameter', async () => {
         const result = await supertest(web)

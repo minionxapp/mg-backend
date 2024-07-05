@@ -83,6 +83,7 @@ describe('POST api/users/login', function () {
                 username: "test",
                 password: "test"
             });
+            logger.info("++++++++++++++++++++++++++++++++++++++++++++")
         logger.info(result.body);
 
         expect(result.status).toBe(200);
@@ -163,6 +164,23 @@ describe('GET api/users/current', () => {
         expect(result.status).toBe(401);
         expect(result.body.errors).toBeDefined()
     });
+
+    // /api/user/ceklogin/:token
+
+    it('should can get user by token', async () => {
+        const result = await supertest(web)
+            .get("/api/user/ceklogin/" + "test")
+            .set('Authorization', 'test');
+        expect(result.status).toBe(200);
+        expect(result.status).toBe(200);
+        expect(result.body.data.username).toBe('test');
+        expect(result.body.data.name).toBe('test');
+    });
+
+
+
+
+
 });
 
 // ====================================

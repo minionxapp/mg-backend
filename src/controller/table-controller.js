@@ -133,7 +133,7 @@ const get = async (req, res, next) => {
             space + namaModelOri + " = validat(get" + namaModel + "Validation," + namaModelOri + "Id);<br>" +
             space + "const " + namaModel + " = await prismaClient." + namaModelOri + ".findFirst({<br>" +
             space + "where :{<br>" +
-            space2 + "id : " + namaModelOri + ".Id<br>" +
+            space2 + "id : " + namaModelOri + "<br>" +
             space + "},<br>" +
             space + "select: {<br> id:true,<br>"
 

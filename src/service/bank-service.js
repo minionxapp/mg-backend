@@ -7,6 +7,19 @@ import { createBankValidation, getBankValidation, updateBankValidation, searchBa
 
 const create = async (user, request) => {
     const bank = validat(createBankValidation, request);
+
+    // cek kode tidak boleh sama
+    const countBank = await prismaClient.bank.count({
+        where: {
+            kode: bank.kode
+        }
+    });
+    if (countBank >= 1) {
+        throw new ResponseError(400, 'Bank already exist');
+    }
+
+
+
     bank.createBy = user.username;
     return prismaClient.bank.create({
         data: bank,
@@ -24,9 +37,9 @@ const create = async (user, request) => {
 //===============SERVICE GET====
 const get = async (user, bankId) => {
     const bank = validat(getBankValidation, bankId);
-    const Bank = await prismaClient.bank.findFirst({
+    const Bank = await prismaClient.bank.findUnique({
         where: {
-            id: bank.Id
+            id: bank
         },
         select: {
             id: true,
@@ -39,7 +52,7 @@ const get = async (user, bankId) => {
     if (!Bank) {
         throw new ResponseError(404, "bank is not found");
     }
-    logger.info(bank);
+    logger.info(Bank);
     return Bank;
 }
 
